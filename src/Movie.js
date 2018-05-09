@@ -17,8 +17,11 @@ class Movie extends React.Component {
                     />
                 </td>
                 <td>
-                  {movie.title}
+                  <h3>{movie.title}</h3>
                   <p>{movie.overview}</p>
+                  <a 
+                    target="_blank"
+                    href={movie.url}>View</a>
                 </td>
               </tr>
             </tbody>

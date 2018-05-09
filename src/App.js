@@ -14,47 +14,58 @@ class App extends Component {
 
   componentDidMount(){
 
-    this.performSearch();
+    this.performSearch('woman');
   }
 
+  processSearchResults = (json) => {
+    const movies = [];
+        
+    json.results.forEach(({id, title, overview, poster_path}) => {
 
-  performSearch(){
+        const poster_src = (poster_path 
+                              ? `https://image.tmdb.org/t/p/w185${poster_path}` 
+                              : noposter);
 
-    const searchUrl = `${SEARCH_URL}avengers`;
+        const url = `https://www.themoviedb.org/movie/${id}`;
+
+        movies.push({
+          id,
+          title,
+          overview,
+          poster_src,
+          url
+        });
+    });
+
+    this.setState({
+      movies
+    });
+
+  }
+
+  performSearch(searchTerm){
+
+    const searchUrl = `${SEARCH_URL}${searchTerm}`;
 
     fetch(searchUrl)
       .then(data => data.json())
-      .then(json => {
-        
-        const movies = [];
-        
-        json.results.forEach(({id, title, overview, poster_path}) => {
-
-            const poster_src = (poster_path 
-                                  ? `https://image.tmdb.org/t/p/w185${poster_path}` 
-                                  : noposter);
-
-            movies.push({
-              id,
-              title,
-              overview,
-              poster_src
-            });
-        });
-
-        this.setState({
-          movies
-        });
-
-      })
+      .then(this.processSearchResults)
       .catch(error => alert('Failed to fetch data'));
   }
 
+  searchHandler = (event) => {
+
+    const searchTerm = event.target.value;
+
+    this.performSearch(searchTerm);
+  }
 
   render() {
+
+    const moviesList = this.state.movies.map((movie) => <Movie key={movie.id} data={movie} />);
+
     return (
-      <div className="App">
-        
+      <div>
         
         <table className="header">
           <tbody>
@@ -73,9 +84,12 @@ class App extends Component {
           </tbody>
         </table>
 
-        <input className="movie-search" placeholder="Enter search term" />
+        <input 
+          className="movie-search" 
+          placeholder="Enter search term"
+          onChange={this.searchHandler} />
 
-        {this.state.movies.map((movie) => <Movie key={movie.id} data={movie} />)}
+        {moviesList}
 
       </div>
     );
