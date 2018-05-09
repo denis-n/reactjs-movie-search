@@ -89,7 +89,7 @@ class App extends Component {
           placeholder="Enter search term"
           onChange={this.searchHandler} />
 
-        {moviesList}
+        <div className="movies-list">{moviesList}</div>
 
       </div>
     );
