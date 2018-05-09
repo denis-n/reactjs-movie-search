@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Movie from './Movie';
 import logo from './green_app_icon.svg';
 import './App.css';
 
@@ -50,28 +51,7 @@ class App extends Component {
 
         <input className="movie-search" placeholder="Enter search term" />
 
-        {this.movies.map((movie) => {
-
-          const table = (<table key={movie.id}>
-            <tbody>
-              <tr>
-                <td>
-                  <img alt="poster" 
-                    className="poster"
-                    src={movie.poster_url} 
-                    width="100" 
-                  />
-                </td>
-                <td>
-                  {movie.title}
-                  <p>{movie.overview}</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>)
-
-          return table;
-        })}
+        {this.movies.map((movie) => <Movie key={movie.id} data={movie} />)}
 
       </div>
     );
