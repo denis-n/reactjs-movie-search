@@ -11,3 +11,14 @@
 .header-logo {
   padding: 0 16px;
 }
+
+.movie-search {
+  font-size: 28px;
+  display: block;
+  width: 70%;
+  padding: 8px 0 8px 16px;
+}
+
+.poster {
+  padding: 4px 8px
+}
