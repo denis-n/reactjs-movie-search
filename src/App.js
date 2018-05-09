@@ -1,29 +1,53 @@
 import React, { Component } from 'react';
 import Movie from './Movie';
 import logo from './green_app_icon.svg';
+import noposter from './noposter.png'
 import './App.css';
+
+const SEARCH_URL = "https://api.themoviedb.org/3/search/movie?api_key=1b5adf76a72a13bad99b8fc0c68cb085&query=";
 
 class App extends Component {
 
+  state = {
+    movies: []
+  }
 
-  constructor(props) {
-    super(props);
+  componentDidMount(){
 
-    this.movies = [
-      {
-        id: 0,
-        title: "Avengers",
-        overview: "description",
-        poster_url: "https://image.tmdb.org/t/p/original/imekS7f1OuHyUP2LAiTEM0zBzUz.jpg"
-      },
-      {
-        id: 1,
-        title: "Avengers 2",
-        overview: "description 2",
-        poster_url: "https://image.tmdb.org/t/p/original/iHy5sUxjWc5IQ61sMUTqoJRVgy9.jpg"
-      }
-    ];
+    this.performSearch();
+  }
 
+
+  performSearch(){
+
+    const searchUrl = `${SEARCH_URL}avengers`;
+
+    fetch(searchUrl)
+      .then(data => data.json())
+      .then(json => {
+        
+        const movies = [];
+        
+        json.results.forEach(({id, title, overview, poster_path}) => {
+
+            const poster_src = (poster_path 
+                                  ? `https://image.tmdb.org/t/p/w185${poster_path}` 
+                                  : noposter);
+
+            movies.push({
+              id,
+              title,
+              overview,
+              poster_src
+            });
+        });
+
+        this.setState({
+          movies
+        });
+
+      })
+      .catch(error => alert('Failed to fetch data'));
   }
 
 
@@ -51,7 +75,7 @@ class App extends Component {
 
         <input className="movie-search" placeholder="Enter search term" />
 
-        {this.movies.map((movie) => <Movie key={movie.id} data={movie} />)}
+        {this.state.movies.map((movie) => <Movie key={movie.id} data={movie} />)}
 
       </div>
     );

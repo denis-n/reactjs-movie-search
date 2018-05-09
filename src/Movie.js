@@ -10,11 +10,11 @@ class Movie extends React.Component {
             <tbody>
               <tr>
                 <td>
-                  <img alt="poster" 
-                    className="poster"
-                    src={movie.poster_url} 
-                    width="100" 
-                  />
+                    <img alt="poster" 
+                        className="poster"
+                        src={movie.poster_src} 
+                        width="100" 
+                    />
                 </td>
                 <td>
                   {movie.title}
